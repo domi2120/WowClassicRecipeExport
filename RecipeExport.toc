@@ -1,0 +1,5 @@
+## Interface: 11302
+## Title: RecipeExport
+## Notes: Allows you to export Recipes to the discord RecipeTracker
+RecipeExport.lua
+RecipeExport.xml
