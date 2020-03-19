@@ -125,7 +125,7 @@ function EditBox_Show(text, suffix)
       
       if _G[editBoxScrollFrameName] == nil then
 
-        DEFAULT_CHAT_FRAME:AddMessage("adding scrollframe \"" .. editBoxScrollFrameName .. "\" to " .. editBoxName );
+        --DEFAULT_CHAT_FRAME:AddMessage("adding scrollframe \"" .. editBoxScrollFrameName .. "\" to " .. editBoxName );
         sf = CreateFrame("ScrollFrame", editBoxScrollFrameName, _G[editBoxName], "UIPanelScrollFrameTemplate")
         sf:SetPoint("LEFT", 16, 0)
         sf:SetPoint("RIGHT", -32, 0)
