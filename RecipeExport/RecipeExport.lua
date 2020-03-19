@@ -13,7 +13,6 @@ SlashCmdList["EXR"] = function(msg)
 
 
   if GetNumTradeSkills() > 1 then
-    DEFAULT_CHAT_FRAME:AddMessage("its a tradeskill ");
     for i=1,GetNumTradeSkills() do
       name, type, _, _, _, _ = GetTradeSkillInfo(i);
       if (name and type ~= "header") then
@@ -26,7 +25,6 @@ SlashCmdList["EXR"] = function(msg)
       end
     end
   else
-    DEFAULT_CHAT_FRAME:AddMessage("its a craft ");
     for i=1,GetNumCrafts() do
       name, _, type, _, _, _, _ = GetCraftInfo(i);
       if (name and type ~= "header") then
