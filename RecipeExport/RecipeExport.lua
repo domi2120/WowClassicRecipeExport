@@ -81,9 +81,8 @@ end
 
 function EditBox_Show(text, suffix)
   --if not EditBox then
-  
-  --DEFAULT_CHAT_FRAME:AddMessage("test");
-  DEFAULT_CHAT_FRAME:AddMessage(suffix);
+
+  --DEFAULT_CHAT_FRAME:AddMessage(suffix);
   if not suffix then
     return
   end
