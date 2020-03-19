@@ -41,6 +41,7 @@ SlashCmdList["EXR"] = function(msg)
 
   local recipesParam = "!recipeadd ";
   
+  local windowIndex = 1;
   
   --DEFAULT_CHAT_FRAME:AddMessage(table.getn(recipes));
   --iterate over all recipes
@@ -52,7 +53,9 @@ SlashCmdList["EXR"] = function(msg)
     else
     --if it does make the param string longer than 2k chars, we print out the string and reset it to start a new recipeAdd command
       --DEFAULT_CHAT_FRAME:AddMessage(index);
-      EditBox_Show(recipesParam, tostring(index));
+      EditBox_Show(recipesParam, tostring(windowIndex));
+      windowIndex = windowIndex +1;
+
       recipesParam = "!recipeadd ";
       recipesParam = recipesParam .. currentParam
     end
@@ -61,7 +64,7 @@ SlashCmdList["EXR"] = function(msg)
   --TODO
   --create ui window, possibly multiple text boxes if the export has to be split into multiple discord messages
   --DEFAULT_CHAT_FRAME:AddMessage(recipesParam);
-  EditBox_Show(recipesParam, tostring(9934534));
+  EditBox_Show(recipesParam, tostring(windowIndex));
 end 
 
 function TableConcat(t1,t2)
@@ -93,70 +96,82 @@ function EditBox_Show(text, suffix)
       editBoxEditBoxName = 'EditBoxEditBox_' .. suffix;
       editBoxScrollFrameName = 'EditBoxScrollFrame_' .. suffix;
       editBoxResizeButtonName ='EditBoxResizeButton_' ..suffix;
+        
+      if _G[editBoxName] == nil then 
 
-      local f = CreateFrame("Frame", editBoxName, UIParent, "DialogBoxFrame")
-      f:SetPoint("CENTER")
-      f:SetSize(200, 200)
-      
-      f:SetBackdrop({
-          bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
-          edgeFile = "Interface\\PVPFrame\\UI-Character-PVP-Highlight",
-          edgeSize = 16,
-          insets = { left = 8, right = 6, top = 8, bottom = 8 },
-      })
-      f:SetBackdropBorderColor(0, .44, .87, 0.5) -- darkblue
-      
-      -- Movable
-      f:SetMovable(true)
-      f:SetClampedToScreen(true)
-      f:SetScript("OnMouseDown", function(self, button)
-          if button == "LeftButton" then
-              self:StartMoving()
-          end
-      end)
-      f:SetScript("OnMouseUp", f.StopMovingOrSizing)
-      
+        f = CreateFrame("Frame", editBoxName, UIParent, "DialogBoxFrame")
+        f:SetPoint("CENTER")
+        f:SetSize(200, 200)
+        
+        f:SetBackdrop({
+            bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+            edgeFile = "Interface\\PVPFrame\\UI-Character-PVP-Highlight",
+            edgeSize = 16,
+            insets = { left = 8, right = 6, top = 8, bottom = 8 },
+        })
+        f:SetBackdropBorderColor(0, .44, .87, 0.5) -- darkblue
+        
+        -- Movable
+        f:SetMovable(true)
+        f:SetClampedToScreen(true)
+        f:SetScript("OnMouseDown", function(self, button)
+            if button == "LeftButton" then
+                self:StartMoving()
+            end
+        end)
+        f:SetScript("OnMouseUp", f.StopMovingOrSizing)
+      end  
       -- ScrollFrame
       
-      --DEFAULT_CHAT_FRAME:AddMessage("adding scrollframe \"" .. editBoxScrollFrameName .. "\" to " .. editBoxName );
-      local sf = CreateFrame("ScrollFrame", editBoxScrollFrameName, _G[editBoxName], "UIPanelScrollFrameTemplate")
-      sf:SetPoint("LEFT", 16, 0)
-      sf:SetPoint("RIGHT", -32, 0)
-      sf:SetPoint("TOP", 0, -16)
-      sf:SetPoint("BOTTOM", _G[editBoxName .. 'Button'], "TOP", 0, 0)
+      if _G[editBoxScrollFrameName] == nil then
+
+        DEFAULT_CHAT_FRAME:AddMessage("adding scrollframe \"" .. editBoxScrollFrameName .. "\" to " .. editBoxName );
+        sf = CreateFrame("ScrollFrame", editBoxScrollFrameName, _G[editBoxName], "UIPanelScrollFrameTemplate")
+        sf:SetPoint("LEFT", 16, 0)
+        sf:SetPoint("RIGHT", -32, 0)
+        sf:SetPoint("TOP", 0, -16)
+        sf:SetPoint("BOTTOM", _G[editBoxName .. 'Button'], "TOP", 0, 0)
+      end
       
-      -- EditBox
-      local eb = CreateFrame("EditBox", editBoxEditBoxName,  _G[editBoxScrollFrameName])
-      eb:SetSize(sf:GetSize())
-      eb:SetMultiLine(true)
-      eb:SetAutoFocus(false) -- dont automatically focus
-      eb:SetFontObject("ChatFontNormal")
-      eb:SetScript("OnEscapePressed", function() f:Hide() end)
-      sf:SetScrollChild(eb)
+      if _G[editBoxEditBoxName] == nil then
+
+        -- EditBox
+        eb = CreateFrame("EditBox", editBoxEditBoxName,  _G[editBoxScrollFrameName])
+        eb:SetSize(sf:GetSize())
+        eb:SetMultiLine(true)
+        eb:SetAutoFocus(false) -- dont automatically focus
+        eb:SetFontObject("ChatFontNormal")
+        eb:SetScript("OnEscapePressed", function() f:Hide() end)
+        sf:SetScrollChild(eb)
+        
+        -- Resizable
+        f:SetResizable(true)
+        f:SetMinResize(150, 100)
+      end
+
+      if (_G[editBoxResizeButtonName] == nil) then
+
+        rb = CreateFrame("Button", editBoxResizeButtonName, EditBox)
+        rb:SetPoint("BOTTOMRIGHT", -6, 7)
+        rb:SetSize(16, 16)
+        
+        rb:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+        rb:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+        rb:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+        
+        rb:SetScript("OnMouseDown", function(self, button)
+            if button == "LeftButton" then
+                f:StartSizing("BOTTOMRIGHT")
+                self:GetHighlightTexture():Hide() -- more noticeable
+            end
+        end)
+        rb:SetScript("OnMouseUp", function(self, button)
+            f:StopMovingOrSizing()
+            self:GetHighlightTexture():Show()
+            eb:SetWidth(sf:GetWidth())
+        end)
+      end
       
-      -- Resizable
-      f:SetResizable(true)
-      f:SetMinResize(150, 100)
-      
-      local rb = CreateFrame("Button", editBoxResizeButtonName, EditBox)
-      rb:SetPoint("BOTTOMRIGHT", -6, 7)
-      rb:SetSize(16, 16)
-      
-      rb:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
-      rb:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
-      rb:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
-      
-      rb:SetScript("OnMouseDown", function(self, button)
-          if button == "LeftButton" then
-              f:StartSizing("BOTTOMRIGHT")
-              self:GetHighlightTexture():Hide() -- more noticeable
-          end
-      end)
-      rb:SetScript("OnMouseUp", function(self, button)
-          f:StopMovingOrSizing()
-          self:GetHighlightTexture():Show()
-          eb:SetWidth(sf:GetWidth())
-      end)
       f:Show()
     end
   --end
