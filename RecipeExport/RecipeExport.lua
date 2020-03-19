@@ -54,6 +54,7 @@ SlashCmdList["EXR"] = function(msg)
       --DEFAULT_CHAT_FRAME:AddMessage(index);
       EditBox_Show(recipesParam, tostring(index));
       recipesParam = "!recipeadd ";
+      recipesParam = recipesParam .. currentParam
     end
   end
 
