@@ -119,7 +119,7 @@ function EditBox_Show(text, suffix)
       sf:SetPoint("LEFT", 16, 0)
       sf:SetPoint("RIGHT", -32, 0)
       sf:SetPoint("TOP", 0, -16)
-      sf:SetPoint("BOTTOM", EditBoxButton, "TOP", 0, 0)
+      sf:SetPoint("BOTTOM", _G[editBoxName .. 'Button'], "TOP", 0, 0)
       
       -- EditBox
       local eb = CreateFrame("EditBox", editBoxEditBoxName,  _G[editBoxScrollFrameName])
