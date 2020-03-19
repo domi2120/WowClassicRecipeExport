@@ -31,9 +31,13 @@ SlashCmdList["EXR"] = function(msg)
     end
   end
 
+  --for debuggings sake, generates extra recipes so a second command needs to be created
+  --[[
+  for i = 1,100 do
+    table.insert(recipes, "recipe number: " .. tostring(i));
+  end
+  ]]--
 
-
-  --DEFAULT_CHAT_FRAME:AddMessage(outputString);
 
   local recipesParam = "!recipeadd ";
   
