@@ -2,7 +2,7 @@ SLASH_EXR1 ="/exr"
 SlashCmdList["EXR"] = function(msg)
   local name, type;
 
-  if (GetNumTradeSkills() < 1) then
+  if (GetNumTradeSkills() < 1 and GetNumCrafts() < 1) then
     print("you either have no recipes, or need to first open your profession window (the one that lists your recipes)");
     return;
   end
@@ -11,22 +11,31 @@ SlashCmdList["EXR"] = function(msg)
   local outputString = "";
   local recipes = {};
 
-  
-  
-  EditBox_Show("test test test");
 
-  for i=1,GetNumTradeSkills() do
-    name, type, _, _, _, _ = GetTradeSkillInfo(i);
-    if (name and type ~= "header") then
-      if (first) then
-        --DEFAULT_CHAT_FRAME:AddMessage("!recipeadd " ..name);
-      outputString = outputString .. "!recipeadd " .. name;
-      recipes[i] = name;
-      first = false;
-      else
-        --DEFAULT_CHAT_FRAME:AddMessage(name);
-        outputString = outputString .. "\n" .. name;
+  if GetNumTradeSkills() > 1 then
+    DEFAULT_CHAT_FRAME:AddMessage("its a tradeskill ");
+    for i=1,GetNumTradeSkills() do
+      name, type, _, _, _, _ = GetTradeSkillInfo(i);
+      if (name and type ~= "header") then
+        if (first) then
         recipes[i] = name;
+        first = false;
+        else
+          recipes[i] = name;
+        end
+      end
+    end
+  else
+    DEFAULT_CHAT_FRAME:AddMessage("its a craft ");
+    for i=1,GetNumCrafts() do
+      name, _, type, _, _, _, _ = GetCraftInfo(i);
+      if (name and type ~= "header") then
+        if (first) then
+        recipes[i] = name;
+        first = false;
+        else
+          recipes[i] = name;
+        end
       end
     end
   end
