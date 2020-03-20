@@ -55,7 +55,7 @@ SlashCmdList["EXR"] = function(msg)
   for index, recipe in pairs(recipes) do
     local currentParam = "\n" .. recipes[index];
     --check if the current recipe would make the param string longer than 2k chars, if not, we can concat it
-    if (string.len(recipesParam) + string.len(currentParam) < 2000) then
+    if (string.len(recipesParam) + string.len(currentParam) < 1850) then
       recipesParam = recipesParam .. currentParam;
     else
     --if it does make the param string longer than 2k chars, we print out the string and reset it to start a new recipeAdd command
