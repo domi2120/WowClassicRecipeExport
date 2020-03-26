@@ -4,7 +4,7 @@ Installation
 
 Exporting your Recipes
   Open up the window of the profession you want to export the recipes for (the one that lists the recipes) and run /exr.
-  A popup will appear that contains "!recipeadd" followed by your recipes of that profession, copy it, paste it into the discord 
+  A popup will appear that contains "!recipeadd" followed by your recipes of that profession, copy it (ctrl a -> ctrl c), paste it into the discord 
   RecipeTracker channel and send the message. Your Recipes for that Profession are now added to the RecipeTracker. (Due to discords maximum   message size, there may be several popups to ensure each command is small enough to fit into a discord message)
   
 Exporting Enchanting Recipes
